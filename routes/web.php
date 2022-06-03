@@ -2,6 +2,8 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Http\Controllers\LearnRawQuery;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -23,4 +25,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/posts/{id}', 'PostController@getById');
     $router->put('/posts/{id}', 'PostController@updatePosts');
     $router->delete('/posts/{id}', 'PostController@deletePosts');
+
+    $router->group(['prefix' => 'learn'], function () use ($router) {
+        $router->get('/rawquery', 'LearnRawQuery@getAll');
+        $router->post('/rawquery', 'LearnRawQuery@add');
+        $router->put('/rawquery/{id}', 'LearnRawQuery@update');
+        $router->get('/rawquery/{id}', 'LearnRawQuery@getById');
+        $router->delete('/rawquery/{id}', 'LearnRawQuery@delete');
+    });
+
 });

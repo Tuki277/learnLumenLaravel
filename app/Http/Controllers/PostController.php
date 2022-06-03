@@ -33,15 +33,17 @@ class PostController extends Controller
 
             // ==============================
 
-            $rules = [
-                'title' => 'required'
-            ];
+            // $rules = [
+            //     'title' => 'required'
+            // ];
 
-            $message = [
-                'required' => 'Bat buoc phai nhap gia tri'
-            ];
+            // $message = [
+            //     'required' => 'Bat buoc phai nhap gia tri'
+            // ];
 
-            $this->validate($req, $rules, $message);
+            // $this->validate($req, $rules, $message);
+
+            // ========================================
 
             $post = new Post();
             $post->title = $req->title;
