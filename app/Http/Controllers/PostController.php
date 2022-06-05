@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostController extends Controller
 {
     public function getAllPost()
     {
+
+        $token = JWTAuth::getToken();
+        $apy = JWTAuth::getPayload($token)->toArray();
+
         try {
             return response() -> json([
                 "error" => "False",
+                "decode" => $apy,
                 "count" => Post::all()->count(),
                 "data" => Post::all(),
             ]);

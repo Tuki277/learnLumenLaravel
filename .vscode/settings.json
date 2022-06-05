@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
     "Tymon"
-  ]
+  ],
+  "intelephense.diagnostics.undefinedMethods": true
 }

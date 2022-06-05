@@ -20,11 +20,17 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('/posts', 'PostController@getAllPost');
-    $router->post('/posts', 'PostController@postPosts');
-    $router->get('/posts/{id}', 'PostController@getById');
-    $router->put('/posts/{id}', 'PostController@updatePosts');
-    $router->delete('/posts/{id}', 'PostController@deletePosts');
+
+    $router->post('/login', 'AuthController@login');
+    $router->post('/register', 'UserController@Register');
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->get('/posts', 'PostController@getAllPost');
+        $router->post('/posts', 'PostController@postPosts');
+        $router->get('/posts/{id}', 'PostController@getById');
+        $router->put('/posts/{id}', 'PostController@updatePosts');
+        $router->delete('/posts/{id}', 'PostController@deletePosts');
+    });
 
     $router->group(['prefix' => 'learn'], function () use ($router) {
         $router->get('/rawquery', 'LearnRawQuery@getAll');
