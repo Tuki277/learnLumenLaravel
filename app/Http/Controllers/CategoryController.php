@@ -2,57 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
-    public function getAllPost()
+    public function getAllCategory()
     {
-
-        // $token = JWTAuth::getToken();
-        // $apy = JWTAuth::getPayload($token)->toArray();
-
         try {
             return response() -> json([
-                "error" => "False",
-                // "decode" => $apy,
-                "count" => Post::all()->count(),
-                "data" => Post::all(),
+                "error" => "false",
+                "count" => Category::all()->count(),
+                "data" => Category::all(),
             ]);
         } catch (\Throwable $th) {
             return response() -> json([
-                "error" => "True",
+                "error" => "true",
                 "data" => $th->getMessage()
             ]);
         }
     }
 
-    public function postPosts(Request $req)
+    public function postCategory(Request $req)
     {
         try {
 
-            // $this->validate($req, [
-            //     'title' => "required"
-            // ]);
+            $this->validate($req, [
+                "title" => "required"
+            ], [
+                'required' => "Bat buoc phai nhap tieu de"
+            ]);
 
-            // ==============================
-
-            // $rules = [
-            //     'title' => 'required'
-            // ];
-
-            // $message = [
-            //     'required' => 'Bat buoc phai nhap gia tri'
-            // ];
-
-            // $this->validate($req, $rules, $message);
-
-            // ========================================
-
-            $post = new Post();
+            $post = new Category();
             $post->title = $req->title;
-            $post->body = $req->body;
 
             if ($post->save())
             {
@@ -72,11 +54,10 @@ class PostController extends Controller
         }
     }
 
-    public function updatePosts(Request $req, $id) {
+    public function updateCategory(Request $req, $id) {
         try {
-            $post = Post::find($id);
+            $post = Category::find($id);
             $post->title = $req->title;
-            $post->body = $req->body;
 
             if ($post->save())
             {
@@ -96,9 +77,9 @@ class PostController extends Controller
         }
     }
 
-    public function deletePosts($id) {
+    public function deleteCategory($id) {
         try {
-            $post = Post::find($id);
+            $post = Category::find($id);
 
             if ($post->delete()) {
                 return response()->json([
@@ -121,7 +102,7 @@ class PostController extends Controller
         try {
             return response()->json([
                 "error" => "false",
-                "data" => Post::find($id)
+                "data" => Category::find($id)
             ]);
         } catch (\Throwable $th) {
             return response()->json([

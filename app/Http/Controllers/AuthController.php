@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Providers\JWT\Namshi;
+use Tymon\JWTAuth\Providers\Auth\Illuminate;
 
 class AuthController extends Controller
 {

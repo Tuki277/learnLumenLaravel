@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\News;
 use Illuminate\Http\Request;
+use App\Helpers\CheckIdCategory;
+use Illuminate\Support\Facades\DB;
 
-class PostController extends Controller
+class NewsController extends Controller
 {
-    public function getAllPost()
+    public function getAllNews()
     {
-
-        // $token = JWTAuth::getToken();
-        // $apy = JWTAuth::getPayload($token)->toArray();
-
         try {
+
+            $data = DB::select('SELECT news.*, categories.title as category_name FROM news, categories WHERE news.category_id = categories.id');
+
             return response() -> json([
                 "error" => "False",
-                // "decode" => $apy,
-                "count" => Post::all()->count(),
-                "data" => Post::all(),
+                "data" => $data,
             ]);
         } catch (\Throwable $th) {
             return response() -> json([
@@ -28,31 +27,30 @@ class PostController extends Controller
         }
     }
 
-    public function postPosts(Request $req)
+    public function postNews(Request $req)
     {
+
+        $checkIdCategory = CheckIdCategory::checkIdCategoryNull($req->category_id);
+
         try {
 
-            // $this->validate($req, [
-            //     'title' => "required"
-            // ]);
+            if (!$checkIdCategory) {
+                return response()->json([
+                    "error" => "false",
+                    "status" => "success",
+                    "message" => "Khong tim thay category"
+                ]);
+            }
 
-            // ==============================
+            $this->validate($req, [
+                "title" => "required",
+                "body" => "required"
+            ]);
 
-            // $rules = [
-            //     'title' => 'required'
-            // ];
-
-            // $message = [
-            //     'required' => 'Bat buoc phai nhap gia tri'
-            // ];
-
-            // $this->validate($req, $rules, $message);
-
-            // ========================================
-
-            $post = new Post();
+            $post = new News();
             $post->title = $req->title;
             $post->body = $req->body;
+            $post->category_id = $req->category_id;
 
             if ($post->save())
             {
@@ -72,9 +70,9 @@ class PostController extends Controller
         }
     }
 
-    public function updatePosts(Request $req, $id) {
+    public function updateNews(Request $req, $id) {
         try {
-            $post = Post::find($id);
+            $post = News::find($id);
             $post->title = $req->title;
             $post->body = $req->body;
 
@@ -96,9 +94,9 @@ class PostController extends Controller
         }
     }
 
-    public function deletePosts($id) {
+    public function deleteCategory($id) {
         try {
-            $post = Post::find($id);
+            $post = News::find($id);
 
             if ($post->delete()) {
                 return response()->json([
@@ -119,10 +117,22 @@ class PostController extends Controller
 
     public function getById ($id) {
         try {
-            return response()->json([
-                "error" => "false",
-                "data" => Post::find($id)
-            ]);
+            $data = DB::select('SELECT news.*, categories.title as category_name FROM news, categories WHERE news.category_id = categories.id AND news.id = ?', [$id]);
+
+            if ($data)
+            {
+                return response()->json([
+                    "error" => "false",
+                    "data" => $data
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    "error" => "false",
+                    "data" => "Not Found"
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 "error" => "false",

@@ -30,6 +30,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/posts/{id}', 'PostController@getById');
         $router->put('/posts/{id}', 'PostController@updatePosts');
         $router->delete('/posts/{id}', 'PostController@deletePosts');
+
+        $router->get('/category', 'CategoryController@getAllCategory');
+        $router->post('/category', 'CategoryController@postCategory');
+        $router->put('/category/{id}', 'CategoryController@updateCategory');
+        $router->get('/category/{id}', 'CategoryController@getById');
+        $router->delete('/category/{id}', 'CategoryController@deleteCategory');
+
+        $router->get('/news', 'NewsController@getAllNews');
+        $router->post('/news', 'NewsController@postNews');
+        $router->get('/news/{id}', 'NewsController@getById');
+        $router->put('/news/{id}', 'NewsController@updatePosts');
+        $router->delete('/news/{id}', 'NewsController@deletePosts');
     });
 
     $router->group(['prefix' => 'learn'], function () use ($router) {
