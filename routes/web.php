@@ -40,8 +40,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/news', 'NewsController@getAllNews');
         $router->post('/news', 'NewsController@postNews');
         $router->get('/news/{id}', 'NewsController@getById');
-        $router->put('/news/{id}', 'NewsController@updatePosts');
-        $router->delete('/news/{id}', 'NewsController@deletePosts');
+        $router->put('/news/{id}', 'NewsController@updateNews');
+        $router->delete('/news/{id}', 'NewsController@deleteNews');
     });
 
     $router->group(['prefix' => 'learn'], function () use ($router) {

@@ -71,10 +71,23 @@ class NewsController extends Controller
     }
 
     public function updateNews(Request $req, $id) {
+
+        $checkIdCategory = CheckIdCategory::checkIdCategoryNull($req->category_id);
+
         try {
+
+            if (!$checkIdCategory) {
+                return response()->json([
+                    "error" => "false",
+                    "status" => "success",
+                    "message" => "Khong tim thay category"
+                ]);
+            }
+
             $post = News::find($id);
             $post->title = $req->title;
             $post->body = $req->body;
+            $post->category_id = $req->category_id;
 
             if ($post->save())
             {
@@ -94,7 +107,7 @@ class NewsController extends Controller
         }
     }
 
-    public function deleteCategory($id) {
+    public function deleteNews($id) {
         try {
             $post = News::find($id);
 
